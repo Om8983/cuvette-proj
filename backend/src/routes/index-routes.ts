@@ -60,7 +60,7 @@ router.post(
         maxAge: 24 * 60 * 60 * 1000,
         // secure: true,   // Ensure this is 'true' in production (only sent over HTTPS)
         httpOnly: true, // Cookie cannot be accessed via JavaScript
-        sameSite: "strict", // Prevents CSRF attacks
+        
       });
       res.status(200).json({ msg: "User created successfully" });
     } catch (e) {
@@ -101,11 +101,11 @@ router.post("/login", userLoginAuth, async (req: Request, res: Response) => {
     process.env.REFRESHTOKEN_PASS ?? ""
   );
 
-  res.cookie(accessToken, {
+  res.cookie('accessToken', accessToken, {
     maxAge: 15 * 60 * 1000,
   });
 
-  res.cookie(refreshToken, {
+  res.cookie('refreshToken', refreshToken, {
     maxAge: 24 * 60 * 60 * 1000,
   });
   res.status(200).json({ msg: "User Login Successfull." });
@@ -117,10 +117,12 @@ router.post(
   validateToken,
   async (req: Request, res: Response) => {
     const { refreshToken } = req.cookies;
+    
     // since we are verifying valid token in middleware we can directly decode without verifying
     // complete : true means it gives us the obj that include both header and payload objects
     const decoded = jwt.decode(refreshToken, { complete: true });
 
+    // here defined the below type because though the payload can be null it would be handled by optional chaining but TS isn't aware of how does the data look like 
     type payloadDecode = {
       id: string;
     };
@@ -128,12 +130,6 @@ router.post(
     const { id } = decoded?.payload as payloadDecode;
     const user = await User.findOne({_id : id})
 
-    // defining type for user as well as TS doesn't know it
-    type Db_User = {
-      id : string ,
-      username : string
-      email : string 
-    }
 
     const newAccessToken = jwt.sign({
       id : user?._id, 
@@ -143,7 +139,7 @@ router.post(
       expiresIn : "15min"
     })
 
-    res.cookie("accessToke", newAccessToken, {
+    res.cookie("accessToken", newAccessToken, {
       maxAge: 15 * 60 * 1000,
       httpOnly : true  // flags the cookie to be only accessible by the web-server 
     })

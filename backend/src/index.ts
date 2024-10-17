@@ -14,7 +14,11 @@ import {router} from "./routes/index-routes"
 //middlewares
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin : "http://localhost:5173",
+    credentials: true,               // This allows credentials (cookies, etc.)
+    optionsSuccessStatus: 200
+  }));
 app.use(cookieParser())
 app.use(passport.initialize())
 

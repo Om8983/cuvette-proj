@@ -9,6 +9,7 @@ import { useSetRecoilState } from "recoil"
 import { isUserLoggedIn } from "../store/atoms/UserAtom"
 
 
+
 export const Signup: React.FC = () => {
 
 
@@ -36,32 +37,32 @@ export const Signup: React.FC = () => {
             password: password
         }
 
-        const res = await axios.post("http://localhost:3000/app/v1/signup", newUser, { withCredentials: true })
 
-        console.log(res);
-        console.log(res.status);
-        
-        
-        // if (res.status === 200) {
-        //     setUser(true)
-        //     alert("User Signup Successfull!")
-        //     navigate("/dashboard")
-        //     return;
-        // } else if (res.status === 404) {
-        //     alert("User doesn't exist. Please sign up.");
-        //     navigate("/signup");
-        // } else if (res.status === 401) {
-        //     alert("Please enter valid credentials.");
-        //     navigate('/login');
-        // } else if (res.status === 500) {
-        //     alert("Internal server error.");
-        //     navigate('/login');
-        // } else {
-        //     console.error("Unexpected error");
-        //     alert("An unexpected error occurred. Please try again.");
-        // }
-  }
 
+        // const response = await axios.post("http://localhost:3000/app/v1/signup", newUser, { withCredentials: true })
+        axios.post("http://localhost:3000/app/v1/signup", newUser)
+        .then((AxiosResponse) => {
+            // Handle response
+            if (AxiosResponse.status === 200) {
+                setUser(true)
+                alert("User Signup Successfull!")
+                navigate("/dashboard")
+                return;
+            }
+        }).catch(( AxiosError) => {
+            if (AxiosError.status === 401) {
+                alert("Please enter valid credentials.");
+                navigate('/signup');
+            } else if(AxiosError.status === 409){
+                alert("User Already Exist. Please Login.");
+                navigate("/login");
+            }else if(AxiosError.status === 500){
+                alert("Internal server error.");
+                navigate('/signup');
+            }
+        })
+    }
+    
     // redirecting the user to external google auth page...
     const googleAuthBtn = () => {
         try {
@@ -89,7 +90,7 @@ export const Signup: React.FC = () => {
                     <div className="font-medium font-serif">
                         <span>Already a User?</span> <a href="http://localhost:5173/login" className="cursor-pointer
                         hover:text-[#0d7395]  transition ease-in-out hover:scale-110     
-                    ">Login</a>
+                        ">Login</a>
                     </div>
                     <GoogleBtn content="SignUp with Google" handleOnclick={googleAuthBtn} ></GoogleBtn>
                 </BlurBox>
@@ -98,3 +99,32 @@ export const Signup: React.FC = () => {
         </>
     )
 }
+
+
+                
+                // try {
+                //     if (response.status === 200) {
+                //         setUser(true)
+                //         alert("User Signup Successfull!")
+                //         navigate("/dashboard")
+                //         return;
+                //     }
+                // } catch (error) {
+                
+                //     if (error instanceof AxiosError) {
+                //         if (error.response?.status === 404) {
+                //             alert("User doesn't exist. Please sign up.");
+                //             navigate("/signup");
+                //         } else if (error.response?.status === 401) {
+                //             alert("Please enter valid credentials.");
+                //             navigate('/login');
+                //         } else if (error.response?.status === 500) {
+                //             alert("Internal server error.");
+                //             navigate('/login');
+                //         } else {
+                //             console.error("Unexpected error");
+                //             alert("An unexpected error occurred. Please try again.");
+                //         }
+                //     }
+                    
+                // }
