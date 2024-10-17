@@ -53,49 +53,22 @@ export const Signup: React.FC = () => {
             // Check if the error is an instance of AxiosError
             if (error instanceof AxiosError) {
                 // Debugging: Log the error to check what you're getting
-                console.log("Axios error occurred: ", error);
-
+                // console.log("Axios error occurred: ", error);
                 if (error.response) {
-                    // Check the error response status code
-                    console.log("Error status: ", error.response.status);
-
                     if (error.response.status === 409) {
-                        alert("User doesn't exist. Please sign up.");
-                        navigate("/login");
+                        alert("User Already Exist. Please Login.");
+                navigate("/login");
                     } else if (error.response.status === 401) {
                         alert("Please enter valid credentials.");
-                        navigate('/login');
+                        navigate('/signup');
                     } else if (error.response.status === 500) {
                         alert("Internal server error.");
-                        navigate('/login');
+                navigate('/signup');
                     } else {
                         alert("An unexpected error occurred. Please try again.");
                     }
                 } }
         }
-
-        // const response = await axios.post("http://localhost:3000/app/v1/signup", newUser, { withCredentials: true })
-        // axios.post("http://localhost:3000/app/v1/signup", newUser)
-        // .then((AxiosResponse) => {
-        //     // Handle response
-        //     if (AxiosResponse.status === 200) {
-        //         setUser(true)
-        //         alert("User Signup Successfull!")
-        //         navigate("/dashboard")
-        //         return;
-        //     }
-        // }).catch(( AxiosError) => {
-        //     if (AxiosError.status === 401) {
-        //         alert("Please enter valid credentials.");
-        //         navigate('/signup');
-        //     } else if(AxiosError.status === 409){
-        //         alert("User Already Exist. Please Login.");
-        //         navigate("/login");
-        //     }else if(AxiosError.status === 500){
-        //         alert("Internal server error.");
-        //         navigate('/signup');
-        //     }
-        // })
     }
     
     // redirecting the user to external google auth page...

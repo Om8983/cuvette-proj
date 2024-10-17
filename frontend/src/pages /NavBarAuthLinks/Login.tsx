@@ -1,5 +1,5 @@
 
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { BlurBox } from "../../components/BlurBox"
 import { InputBox } from "../../components/InputBox"
 import { Button } from "../../components/Button"
@@ -31,34 +31,68 @@ export const Login: React.FC = () => {
             email: email,
             password: password
         }
+        try {
+            const response = await axios.post("http://localhost:3000/app/v1/login", userLoginCred, { withCredentials: true });
 
-        axios.post("http://localhost:3000/app/v1/login", userLoginCred, { withCredentials: true })
-            .then((AxiosResponse) => {
-                if (AxiosResponse.status === 200) {
-                    setUser(true)
-                    alert("User Login Successfull!")
-                    navigate("/dashboard")
-                    return;
+            // // Debugging: Log the response to verify
+            // console.log("Response received: ", response);
+
+            if (response.status === 200) {
+                setUser(true)
+                alert("User Login Successful!")
+                navigate("/dashboard")
+                return;
+            }
+        } catch (error) {
+            // Check if the error is an instance of AxiosError
+            if (error instanceof AxiosError) {
+                // Debugging: Log the error to check what you're getting
+                // console.log("Axios error occurred: ", error);
+                if (error.response) {
+                    if (error.response.status === 404) {
+                        alert("User Doesn't exist. Please SingUp")
+                        navigate("/signup")
+                        return;
+                    } else if (error.response.status === 401) {
+                        alert("Please enter valid credentials.");
+                        navigate('/login');
+                    } else if (error.response.status === 500) {
+                        alert("Internal server error.");
+                        navigate('/signup');
+                    } else {
+                        alert("An unexpected error occurred. Please try again.");
+                        navigate('/login')
+                    }
                 }
-            })
-            .catch((AxiosError) => {
-                if (AxiosError.status === 404) {
-                    alert("User Doesn't exist. Please SingUp")
-                    navigate("/signup")
-                    return;
-                } else if (AxiosError.status === 401) {
-                    alert("Please Enter Valid Credentials")
-                    navigate('/login')
-                    return;
-                } else if (AxiosError.status === 500) {
-                    alert("Internal Server Error")
-                    navigate('/login')
-                    return;
-                }else{
-                    console.error("unexpected error occured")
-                    navigate('/login')
-                }
-            })
+            }
+        }
+        // axios.post("http://localhost:3000/app/v1/login", userLoginCred, { withCredentials: true })
+        //     .then((AxiosResponse) => {
+        //         if (AxiosResponse.status === 200) {
+        //             setUser(true)
+        //             alert("User Login Successfull!")
+        //             navigate("/dashboard")
+        //             return;
+        //         }
+        //     })
+        //     .catch((AxiosError) => {
+        //         if (AxiosError.status === 404) {
+        //             alert("User Doesn't exist. Please SingUp")
+        //             navigate("/signup")
+        //             return;
+        //         } else if (AxiosError.status === 401) {
+        //             alert("Please Enter Valid Credentials")
+        //             navigate('/login')
+        //             return;
+        //         } else if (AxiosError.status === 500) {
+        //             alert("Internal Server Error")
+        //             navigate('/login')
+        //             return;
+        //         }else{
+        //             console.error("unexpected error occured")
+        //             navigate('/login')
+        //         }
+        //     })
 
     }
 
