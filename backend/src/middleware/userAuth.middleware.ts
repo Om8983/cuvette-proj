@@ -45,39 +45,20 @@ export const validateToken = (
   next: NextFunction
 ) => {
   try {
-    const { refreshToken } = req.cookies;
+    const { refreshToken } = req.cookies;   
     if (!refreshToken) {
       res.status(401).json({ msg: "No refresh token provided" });
       return;
-    }
+    }    
     const valid = jwt.verify(refreshToken, process.env.REFRESHTOKEN_PASS ?? "");
+    
     if (!valid) {
       res.status(403).json({ msg: "invalid or expired refresh token" });
       return;
     }
+    
     next();
   } catch (e) {
     res.status(500).json({ msg: "internal server error" });
   }
 };
-
-// export const validateToken = (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const token = req.cookies;
-//     // headers : refreshToken <token>
-//     // since the type of token is "token : Record<string, any>" we have to split it
-//     const refreshToken = token.split(" ")[1];
-//     // here we won't decode instead verify the token and move forward, cuz we don't wanna find user
-//     const valid = jwt.verify(refreshToken, process.env.REFRESHTOKEN_PASS ?? "");
-//     if(!valid){
-//       res.status(404).json({msg: "invalid refresh token"})
-//     }
-//     next();
-//   } catch (e) {
-//     res.status(500).json({ msg: "internal server error" });
-//   }
-// };

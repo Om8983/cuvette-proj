@@ -35,19 +35,19 @@ router.get(
       // generate access and refresh token
       const accessToken = jwt.sign(
         { id: _id, username, email },
-        process.env.ACCESSTOKEN_PASS ?? ""
+        process.env.ACCESSTOKEN_PASS ?? "", {expiresIn : '15min'}
       );
       const refreshToken = jwt.sign(
         { id: _id },
-        process.env.REFRESHTOKEN_PASS ?? ""
+        process.env.REFRESHTOKEN_PASS ?? "", {expiresIn : '1d'}
       );
 
       // sending tokens as cookie
       res.cookie("accessToken", accessToken, {
-        maxAge: 15 * 60 * 1000,
+        maxAge:  15 * 60 * 1000,   // this overwrites the expiresIn timeout
       });
       res.cookie("refreshToken", refreshToken, {
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge:  24 * 60 * 60 * 1000, //set to 1day
       });
 
       // Successful authentication, redirect home.

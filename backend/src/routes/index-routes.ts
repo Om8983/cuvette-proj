@@ -60,7 +60,6 @@ router.post(
         maxAge: 24 * 60 * 60 * 1000,
         // secure: true,   // Ensure this is 'true' in production (only sent over HTTPS)
         httpOnly: true, // Cookie cannot be accessed via JavaScript
-        
       });
       res.status(200).json({ msg: "User created successfully" });
     } catch (e) {
@@ -98,14 +97,15 @@ router.post("/login", userLoginAuth, async (req: Request, res: Response) => {
   );
   const refreshToken = jwt.sign(
     { id: user?.id },
-    process.env.REFRESHTOKEN_PASS ?? ""
+    process.env.REFRESHTOKEN_PASS ?? "",
+    {expiresIn : '15min'}
   );
 
-  res.cookie('accessToken', accessToken, {
+  res.cookie("accessToken", accessToken, {
     maxAge: 15 * 60 * 1000,
   });
 
-  res.cookie('refreshToken', refreshToken, {
+  res.cookie("refreshToken", refreshToken, {
     maxAge: 24 * 60 * 60 * 1000,
   });
   res.status(200).json({ msg: "User Login Successfull." });
@@ -147,4 +147,5 @@ router.post(
     res.status(200).json({msg : "token generation successfull"})
   }
 );
-export { router };
+
+export {router}

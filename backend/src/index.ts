@@ -11,6 +11,7 @@ dotenv.config()
 import authRoutes from "./routes/google-auth/google-routes"
 import {router} from "./routes/index-routes"
 
+
 //middlewares
 const app = express();
 app.use(express.json());
@@ -31,7 +32,9 @@ app.use("/app/v1", router);
 ;( async () => {
     try{
         const connection = await mongoose.connect(`${process.env.DB_URL}${process.env.DB_NAME}`)
-        console.log("Db connected successfully");
+        if(connection){
+            console.log("db connected successfully");
+        }
         
         app.listen(process.env.PORT, () => {
             console.log(`Server running on port${process.env.PORT}`);
