@@ -5,19 +5,20 @@ import { Login } from "./pages /NavBarAuthLinks/Login"
 import { Home } from "./pages /Home"
 import { Dashboard } from "./pages /Dashboard"
 import { ProtectedRoute } from "./pages /ProtectedRoute"
-import { Landing } from "./pages /Landing"
+
 
 export const AppRoutes = () => {
   return (
     <>
       <Routes>
-        <Route element={<Landing />}>
-          <Route path="/" element={<Home />}></Route>
-        </Route>
+        {/* home page which would be common */}
+        <Route path="/" element={<Home />}></Route>
+        {/* auth pages */}
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/login" element={<Login />}></Route>
-        {/* protected route */}
+        {/* protected route to determine if cookies are sent and are valid by making backend call*/}
         <Route path="/protectedRoute" element={<ProtectedRoute />}></Route>
+        {/* dashboard route is being protected here */}
         <Route path="/dashboard" element={<Dashboard />}></Route>
       </Routes>
     </>

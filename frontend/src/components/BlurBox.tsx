@@ -8,7 +8,7 @@ export const BlurBox = ({ children }: PrposType) => {
         <>
 
             <div className=" flex justify-end  ">
-                <div className="flex flex-col gap-7 justify-center items-center  bg-transparent w-[50rem] h-[43.5rem]  outline-none backdrop-blur-[10px]  ">
+                <div className="flex flex-col gap-7 justify-center items-center  bg-transparent w-[50rem] h-[43.5rem]  outline-none backdrop-blur-[20px]  ">
 
                     {children}
 

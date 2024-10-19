@@ -11,8 +11,6 @@ import { isUserLoggedIn } from "../store/atoms/UserAtom"
 
 export const Login: React.FC = () => {
 
-
-
     const [email, setEmail] = useState("")
     const [password, setPass] = useState("")
 
@@ -66,34 +64,6 @@ export const Login: React.FC = () => {
                 }
             }
         }
-        // axios.post("http://localhost:3000/app/v1/login", userLoginCred, { withCredentials: true })
-        //     .then((AxiosResponse) => {
-        //         if (AxiosResponse.status === 200) {
-        //             setUser(true)
-        //             alert("User Login Successfull!")
-        //             navigate("/dashboard")
-        //             return;
-        //         }
-        //     })
-        //     .catch((AxiosError) => {
-        //         if (AxiosError.status === 404) {
-        //             alert("User Doesn't exist. Please SingUp")
-        //             navigate("/signup")
-        //             return;
-        //         } else if (AxiosError.status === 401) {
-        //             alert("Please Enter Valid Credentials")
-        //             navigate('/login')
-        //             return;
-        //         } else if (AxiosError.status === 500) {
-        //             alert("Internal Server Error")
-        //             navigate('/login')
-        //             return;
-        //         }else{
-        //             console.error("unexpected error occured")
-        //             navigate('/login')
-        //         }
-        //     })
-
     }
 
     // redirecting the user to external google auth page...
@@ -109,21 +79,26 @@ export const Login: React.FC = () => {
     return (
         <>
 
-            <div className="flex justify-end" >
-                <img src="/watercolor.jpg" alt="star_img" className="w-screen h-screen absolute " />
-                <BlurBox>
-                    {/* input boxesx */}
+            <div className="flex justify-end bg-mygrad" >
 
+                {/* <img src="/watercolor.jpg" alt="star_img" className="w-screen h-screen absolute " /> */}
+                <BlurBox>
+                    
+                    <a href="/" className=" w-[300px] h-[100px] absolute mb-[36rem] ">
+                        <img src="webpsyche.jpg" alt="webimg" />
+                    </a>
+
+                    {/* input boxesx */}
                     <InputBox content={"Email"} value="email" setValue={setEmail}></InputBox>
                     <InputBox content={"Password"} value="password" setValue={setPass}></InputBox>
                     {/*  signup button */}
-                    <Button handlOnClick={handleOnclick} content="Login"></Button>
+                    <Button className="ring-2" handlOnClick={handleOnclick} content="Login"></Button>
 
                     {/* login redirect */}
                     <div className="font-medium font-serif">
                         <span>Don't Have an Account?</span> <a href="http://localhost:5173/signup" className="cursor-pointer
                         hover:text-[#0d7395]  transition ease-in-out hover:scale-110     
-                        ">SignUp</a>
+                    ">SignUp</a>
                     </div>
                     <GoogleBtn content="Login with Google" handleOnclick={googleAuthBtn} ></GoogleBtn>
                 </BlurBox>
@@ -132,26 +107,3 @@ export const Login: React.FC = () => {
         </>
     )
 }
-// const response = await axios.post("http://localhost:3000/app/v1/login", userLoginCred, {withCredentials: true})
-
-// if(response.status === 200){
-//     setUser(true)
-//     alert("User Login Successfull!")
-//     navigate("/dashboard")
-//     return;
-// }
-// if(response.status === 404){
-//     alert("User Doesn't exist. Please SingUp")
-//     navigate("/signup")
-//     return;
-// }
-// if(response.status === 401){
-//     alert("Please Enter Valid Credentials")
-//     navigate('/login')
-//     return;
-// }
-// if(response.status === 500){
-//     alert("Internal Server Error")
-//     navigate('/login')
-//     return;
-// }

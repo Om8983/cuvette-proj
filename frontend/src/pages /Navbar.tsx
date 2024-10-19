@@ -1,17 +1,27 @@
-import { useRecoilState } from "recoil"
-import { Login } from "./NavBarAuthLinks/Login"
+// import { useRecoilState } from "recoil"
+
+import { useNavigate } from "react-router-dom"
 import { Logout } from "./NavBarAuthLinks/Logout"
-import { Signup } from "./NavBarAuthLinks/Signup"
-import { isUserLoggedIn } from "./store/atoms/UserAtom"
+
+// import { isUserLoggedIn } from "./store/atoms/UserAtom"
 
 
-export const Navbar = () => {
-  const user = useRecoilState(isUserLoggedIn)
-
+export const Navbar = () => { 
+  const navigate = useNavigate();
+  // const user = useRecoilState(isUserLoggedIn)
+  const handleClick = (navTab : string) => {
+    navigate(`/${navTab}`)
+  }
   return (
     <>
       {
-        user
+        !document.cookie ?
+          <>
+            <button onClick={() => handleClick('signup')}>SignUp</button>
+            <button onClick={() => handleClick('login')}>Login</button>
+          </>
+          :
+          <Logout />
       }
     </>
   )

@@ -1,4 +1,4 @@
-import axios, {AxiosError} from "axios"
+import axios, { AxiosError } from "axios"
 import { BlurBox } from "../../components/BlurBox"
 import { InputBox } from "../../components/InputBox"
 import { Button } from "../../components/Button"
@@ -23,7 +23,7 @@ export const Signup: React.FC = () => {
     const setUser = useSetRecoilState(isUserLoggedIn)
 
     // collecting user info and creating user...
-    const handleUserInfo =  async() => {
+    const handleUserInfo = async () => {
 
         interface User {
             username: string
@@ -57,20 +57,21 @@ export const Signup: React.FC = () => {
                 if (error.response) {
                     if (error.response.status === 409) {
                         alert("User Already Exist. Please Login.");
-                navigate("/login");
+                        navigate("/login");
                     } else if (error.response.status === 401) {
                         alert("Please enter valid credentials.");
                         navigate('/signup');
                     } else if (error.response.status === 500) {
                         alert("Internal server error.");
-                navigate('/signup');
+                        navigate('/signup');
                     } else {
                         alert("An unexpected error occurred. Please try again.");
                     }
-                } }
+                }
+            }
         }
     }
-    
+
     // redirecting the user to external google auth page...
     const googleAuthBtn = () => {
         try {
@@ -84,15 +85,20 @@ export const Signup: React.FC = () => {
     return (
         <>
 
-            <div className="flex justify-end" >
-                <img src="/watercolor.jpg" alt="star_img" className="w-screen h-screen absolute " />
+            <div className="flex justify-end bg-mygrad w-screen h-screen" >
+
                 <BlurBox>
+                    {/* home screen logo link */}
+                    <a href="/" className=" w-[300px] h-[100px] absolute mb-[36rem] ">
+                        <img src="webpsyche.jpg" alt="webimg" />
+                    </a>
+
                     {/* input boxesx */}
                     <InputBox content={"Username"} value="username" setValue={setUsername} ></InputBox>
                     <InputBox content={"Email"} value="email" setValue={setEmail}></InputBox>
                     <InputBox content={"Password"} value="password" setValue={setPass}></InputBox>
                     {/*  signup button */}
-                    <Button handlOnClick={handleUserInfo} content="SignUp"></Button>
+                    <Button className="ring-2" handlOnClick={handleUserInfo} content="SignUp"></Button>
 
                     {/* login redirect */}
                     <div className="font-medium font-serif">
@@ -108,31 +114,3 @@ export const Signup: React.FC = () => {
     )
 }
 
-
-                
-                // try {
-                //     if (response.status === 200) {
-                //         setUser(true)
-                //         alert("User Signup Successfull!")
-                //         navigate("/dashboard")
-                //         return;
-                //     }
-                // } catch (error) {
-                
-                //     if (error instanceof AxiosError) {
-                //         if (error.response?.status === 404) {
-                //             alert("User doesn't exist. Please sign up.");
-                //             navigate("/signup");
-                //         } else if (error.response?.status === 401) {
-                //             alert("Please enter valid credentials.");
-                //             navigate('/login');
-                //         } else if (error.response?.status === 500) {
-                //             alert("Internal server error.");
-                //             navigate('/login');
-                //         } else {
-                //             console.error("Unexpected error");
-                //             alert("An unexpected error occurred. Please try again.");
-                //         }
-                //     }
-                    
-                // }
